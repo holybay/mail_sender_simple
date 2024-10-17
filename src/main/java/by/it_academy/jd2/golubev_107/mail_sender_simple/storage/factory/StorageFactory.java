@@ -4,7 +4,7 @@ import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.IMailStorage;
 import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.connection.factory.ConnectionManagerFactory;
 import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.impl.MailStorage;
 
-public class StorageFactory {
+public class StorageFactory implements AutoCloseable {
 
     private static final StorageFactory INSTANCE = new StorageFactory(
             ConnectionManagerFactory.getInstance());
@@ -18,7 +18,8 @@ public class StorageFactory {
         return INSTANCE;
     }
 
-    public void destroy() {
+    @Override
+    public void close() throws Exception {
         ConnectionManagerFactory.getInstance().destroy();
     }
 

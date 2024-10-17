@@ -9,20 +9,21 @@ import jakarta.servlet.annotation.WebListener;
 @WebListener
 public class ApplicationContextListener implements ServletContextListener {
 
-    private ServiceFactory serviceFactory;
-    private StorageFactory storageFactory;
-
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        storageFactory = StorageFactory.getInstance();
-        serviceFactory = ServiceFactory.getInstance();
+        try (StorageFactory storageFactory = StorageFactory.getInstance();
+             ServiceFactory serviceFactory = ServiceFactory.getInstance()) {
+            sce.getServletContext().setRequestCharacterEncoding("UTF-8");
+            sce.getServletContext().setResponseCharacterEncoding("text/html; charset=UTF-8");
+
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
         System.out.println("Context Initialized");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        storageFactory.destroy();
-        serviceFactory.destroy();
         System.out.println("Context closed");
     }
 }

@@ -13,7 +13,7 @@ import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.factory.StorageF
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-public class ServiceFactory {
+public class ServiceFactory implements AutoCloseable {
 
     private static final String USER_PROP = "mail.smtp.user";
     private static final String PASSWORD_PROP = "user.password";
@@ -36,13 +36,10 @@ public class ServiceFactory {
         return INSTANCE;
     }
 
-    public void destroy() {
-        try {
-            if (schedulerService != null) {
-                schedulerService.close();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    @Override
+    public void close() throws Exception {
+        if (schedulerService != null) {
+            schedulerService.close();
         }
     }
 
