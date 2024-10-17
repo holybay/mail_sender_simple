@@ -1,17 +1,44 @@
 package by.it_academy.jd2.golubev_107.mail_sender_simple.storage.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "emails")
 public class Email {
 
+    @Id
     private UUID id;
+
+    @Column(name = "recipient_to")
     private String recipientTo;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "body_text")
     private String text;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private EStatus emailStatus;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
 
     public Email(UUID id, String recipientTo, String title, String text, EStatus emailStatus,
@@ -23,6 +50,9 @@ public class Email {
         this.emailStatus = emailStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Email() {
     }
 
     public static EmailBuilder builder() {

@@ -1,17 +1,18 @@
 package by.it_academy.jd2.golubev_107.mail_sender_simple.storage.factory;
 
 import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.IMailStorage;
-import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.connection.factory.ConnectionManagerFactory;
-import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.impl.MailStorage;
+import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.connection.HibernateManager;
+import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.impl.MailStorageHibernate;
 
 public class StorageFactory implements AutoCloseable {
 
-    private static final StorageFactory INSTANCE = new StorageFactory(
-            ConnectionManagerFactory.getInstance());
+    private static final StorageFactory INSTANCE = new StorageFactory();
     private final IMailStorage mailStorage;
+    private final HibernateManager hibernateManager;
 
-    private StorageFactory(ConnectionManagerFactory cmf) {
-        mailStorage = new MailStorage(cmf.get());
+    private StorageFactory() {
+        hibernateManager = new HibernateManager("unit");
+        mailStorage = new MailStorageHibernate(hibernateManager);
     }
 
     public static StorageFactory getInstance() {
@@ -20,7 +21,7 @@ public class StorageFactory implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        ConnectionManagerFactory.getInstance().destroy();
+        hibernateManager.close();
     }
 
     public IMailStorage getMailStorage() {
