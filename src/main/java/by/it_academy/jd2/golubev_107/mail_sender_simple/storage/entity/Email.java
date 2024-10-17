@@ -10,11 +10,11 @@ public class Email {
     private String recipientTo;
     private String title;
     private String text;
-    private EmailStatus emailStatus;
+    private EStatus emailStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Email(UUID id, String recipientTo, String title, String text, EmailStatus emailStatus,
+    public Email(UUID id, String recipientTo, String title, String text, EStatus emailStatus,
                  LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.recipientTo = recipientTo;
@@ -61,11 +61,11 @@ public class Email {
         this.text = text;
     }
 
-    public EmailStatus getEmailStatus() {
+    public EStatus getEmailStatus() {
         return emailStatus;
     }
 
-    public void setEmailStatus(EmailStatus emailStatus) {
+    public void setEmailStatus(EStatus emailStatus) {
         this.emailStatus = emailStatus;
     }
 
@@ -116,7 +116,7 @@ public class Email {
         private String recipientTo;
         private String title;
         private String text;
-        private EmailStatus emailStatus;
+        private EStatus emailStatus;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
@@ -143,7 +143,7 @@ public class Email {
             return this;
         }
 
-        public EmailBuilder setEmailStatus(EmailStatus emailStatus) {
+        public EmailBuilder setEmailStatus(EStatus emailStatus) {
             this.emailStatus = emailStatus;
             return this;
         }

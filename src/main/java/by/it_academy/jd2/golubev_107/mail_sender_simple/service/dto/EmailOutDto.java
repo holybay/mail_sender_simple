@@ -1,6 +1,6 @@
 package by.it_academy.jd2.golubev_107.mail_sender_simple.service.dto;
 
-import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.entity.EmailStatus;
+import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.entity.EStatus;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -12,11 +12,11 @@ public class EmailOutDto {
     private String recipientTo;
     private String title;
     private String text;
-    private EmailStatus emailStatus;
+    private EStatus emailStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public EmailOutDto(UUID id, String recipientTo, String title, String text, EmailStatus emailStatus,
+    public EmailOutDto(UUID id, String recipientTo, String title, String text, EStatus emailStatus,
                        LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.recipientTo = recipientTo;
@@ -63,11 +63,11 @@ public class EmailOutDto {
         this.text = text;
     }
 
-    public EmailStatus getEmailStatus() {
+    public EStatus getEmailStatus() {
         return emailStatus;
     }
 
-    public void setEmailStatus(EmailStatus emailStatus) {
+    public void setEmailStatus(EStatus emailStatus) {
         this.emailStatus = emailStatus;
     }
 
@@ -118,7 +118,7 @@ public class EmailOutDto {
         private String recipientTo;
         private String title;
         private String text;
-        private EmailStatus emailStatus;
+        private EStatus emailStatus;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
@@ -145,7 +145,7 @@ public class EmailOutDto {
             return this;
         }
 
-        public EmailOutDtoBuilder setEmailStatus(EmailStatus emailStatus) {
+        public EmailOutDtoBuilder setEmailStatus(EStatus emailStatus) {
             this.emailStatus = emailStatus;
             return this;
         }

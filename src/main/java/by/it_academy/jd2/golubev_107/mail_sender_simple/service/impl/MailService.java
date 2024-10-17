@@ -4,11 +4,12 @@ import by.it_academy.jd2.golubev_107.mail_sender_simple.service.IMailService;
 import by.it_academy.jd2.golubev_107.mail_sender_simple.service.dto.CreateEmailDto;
 import by.it_academy.jd2.golubev_107.mail_sender_simple.service.dto.EmailOutDto;
 import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.IMailStorage;
+import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.entity.EStatus;
 import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.entity.Email;
-import by.it_academy.jd2.golubev_107.mail_sender_simple.storage.entity.EmailStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 public class MailService implements IMailService {
@@ -27,6 +28,15 @@ public class MailService implements IMailService {
     }
 
     @Override
+    public EmailOutDto getById(UUID id) {
+        Email email = mailStorage.readById(id);
+        if (email == null) {
+            throw new NoSuchElementException("There is no email with id: " + id);
+        }
+        return toEmailOutDto(email);
+    }
+
+    @Override
     public List<EmailOutDto> getAll() {
         List<Email> allEmails = mailStorage.readAll();
         return allEmails.stream()
@@ -35,16 +45,16 @@ public class MailService implements IMailService {
     }
 
     @Override
-    public void updateStatus(UUID id, EmailStatus.EStatus newStatus) {
+    public void updateStatus(UUID id, EStatus newStatus) {
         Email email = mailStorage.readById(id);
-        email.setEmailStatus(new EmailStatus(newStatus));
+        email.setEmailStatus(newStatus);
         email.setUpdatedAt(LocalDateTime.now());
         mailStorage.update(email);
     }
 
     @Override
-    public List<EmailOutDto> getAllByStatus(EmailStatus.EStatus newStatus) {
-        List<Email> allEmails = mailStorage.readAllByStatus(newStatus);
+    public List<EmailOutDto> getAllByStatus(EStatus status) {
+        List<Email> allEmails = mailStorage.readAllByStatus(status);
         return allEmails.stream()
                         .map(this::toEmailOutDto)
                         .toList();
@@ -64,7 +74,7 @@ public class MailService implements IMailService {
                     .setRecipientTo(dto.getRecipientTo())
                     .setTitle(dto.getTitle())
                     .setText(dto.getText())
-                    .setEmailStatus(new EmailStatus(EmailStatus.EStatus.LOADED))
+                    .setEmailStatus(EStatus.LOADED)
                     .setCreatedAt(timeCreated)
                     .setUpdatedAt(timeCreated)
                     .build();
