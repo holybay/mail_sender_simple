@@ -6,24 +6,34 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @WebListener
 public class ApplicationContextListener implements ServletContextListener {
 
+    private List<AutoCloseable> closeables;
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        try (StorageFactory storageFactory = StorageFactory.getInstance();
-             ServiceFactory serviceFactory = ServiceFactory.getInstance()) {
-            sce.getServletContext().setRequestCharacterEncoding("UTF-8");
-            sce.getServletContext().setResponseCharacterEncoding("text/html; charset=UTF-8");
+        closeables = new ArrayList<>();
+        closeables.add(StorageFactory.getInstance());
+        closeables.add(ServiceFactory.getInstance());
+        sce.getServletContext().setRequestCharacterEncoding("UTF-8");
+        sce.getServletContext().setResponseCharacterEncoding("text/html; charset=UTF-8");
 
-        } catch (Exception e) {
-            System.out.println("ERROR: " + e.getMessage());
-        }
         System.out.println("Context Initialized");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        for (AutoCloseable closeable : closeables) {
+            try {
+                closeable.close();
+            } catch (Exception e) {
+                System.out.println("FAILED TO CLOSE" + e.getMessage());
+            }
+        }
         System.out.println("Context closed");
     }
 }
