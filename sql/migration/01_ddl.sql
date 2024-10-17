@@ -15,4 +15,4 @@ ALTER TABLE app.emails
 ALTER TABLE app.emails
 	DROP COLUMN status_id;
 
-DROP TABLE app.test_drop;
+DROP TABLE app.email_status;
